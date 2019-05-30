@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'climadex';
+  dadosInvalidos = false;
+  nomeCidade = '';
+
+  pesquisar() {
+    
+    console.log('ueeeeee', this.nomeCidade);
+  }
 }
