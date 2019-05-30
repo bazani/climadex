@@ -18,6 +18,7 @@ export class AppComponent {
   isChovendo = false;
   pokemon = '';
   pokeFoto = '';
+  sorteados = [];
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -76,15 +77,17 @@ export class AppComponent {
           }
           this.getPokemonByType(tipo);
         } else {
+          console.error('Algo de errado, não está certo.', resp);
+
           this.spinner.hide();
           this.dadosInvalidos = true;
           this.msgErro = 'Ocorreu um erro inesperado, tente novamente mais tarde.';
-          console.error('Algo de errado, não está certo.', resp);
         }
       },
       err => {
         this.spinner.hide();
         this.dadosInvalidos = true;
+        
         if (err.error.message === 'city not found') {
           this.msgErro = 'Cidade não encontrada, tente novamente.';
         } else {
@@ -96,37 +99,38 @@ export class AppComponent {
   getPokemonByType(tipo: string) {
     this.pokedex.getPokemon(tipo).subscribe(
       resp => {
-        // obtem a qte dos pokemons do tipo, para sortear um numero
-        const amostras = resp.pokemon.length;
-        let sorteio = 0;
-        sorteio = Math.floor((Math.random() * amostras));
-
-        console.log('numero da sorte', sorteio);
-        console.log('pokemon sorteado', resp.pokemon[sorteio]);
-
-        /* for (let index = 0; index < resp.pokemon.length; index++) {
-          const element = resp.pokemon[index];
-        } */
-
         // verifica se o pokemon já foi exibido, para evitar repetições
+        const unicos = resp.pokemon.filter(f => !this.sorteados.includes(f.pokemon.name));
+        const amostras = unicos.length;
 
-        // mostra o nome do pokemon
-        this.pokemon = resp.pokemon[sorteio].pokemon.name;
-        // mostra imagem do pokemon
-        this.getPokemonImage(resp.pokemon[sorteio].pokemon.url);
+        if (amostras > 0) {
+          // sorteia um numero dentre os resultados
+          const sorteio = Math.floor(Math.random() * amostras);
+
+          // armazena pokemon sorteado para não repetir
+          this.sorteados.push(unicos[sorteio].pokemon.name);
+
+          // mostra o nome do pokemon
+          this.pokemon = unicos[sorteio].pokemon.name;
+          // mostra imagem do pokemon
+          this.getPokemonImage(unicos[sorteio].pokemon.url);
+        } else {
+          // mostra msg de erro
+          this.spinner.hide();
+          this.dadosInvalidos = true;
+          this.msgErro = `Todos os pokémons já foram exibidos para o tipo ${tipo}.\n Recarregue a página e tente novamente.`;
+        }
       },
       err => {
+        // mostra msg de erro
         this.spinner.hide();
         this.dadosInvalidos = true;
-        if (err.error.message === 'city not found') {
-          this.msgErro = 'Cidade não encontrada, tente novamente.';
-        } else {
-          this.msgErro = err.error.message;
-        }
+        this.msgErro = err;
       }
     );
   }
 
+  // obtem a imagem do pokemon sorteado
   getPokemonImage(pokeUrl: string) {
     this.pokedex.getPokemonImage(pokeUrl).subscribe(
       resp => {
@@ -141,6 +145,8 @@ export class AppComponent {
     );
   }
 
+
+  // limpa as variaveis para uma nova pesquisa
   limparDados() {
     this.dadosInvalidos = false;
     this.temperatura = '';
