@@ -13,7 +13,7 @@ Uma pokedex baseada no clima de determinada cidade.
 
 ## Tecnologias utilizadas
 
-- Angualr CLI
+- Angular CLI
 - Angular 7
 - Docker
 
