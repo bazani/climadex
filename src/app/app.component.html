@@ -3,7 +3,7 @@
     <h1>Bem vindo(a) ao Climadex!</h1>
     <h4>Uma pokedéx baseada no clima.</h4> 
     <p>
-      Para pesquisar por um pokémon, digite o nome de alguma cidade do mundo no campo abaixo e clique no botão ao lado.
+      Para pesquisar por um pokémon, digite o nome de alguma cidade do mundo no campo abaixo e clique no botão Pesquisar.
     </p>
   </div>
   <form #pokeForm="ngForm">
@@ -40,8 +40,29 @@
         </div>
 
         <div *ngIf="dadosInvalidos" class="alert alert-danger">
-          <p>O nome digitado abaixo não corresponde a nenhuma cidade cadastrada na api do OpenWeatherMap.</p>
+          <p>{{msgErro}}</p>
         </div>
+      </div>
+    </div>
+    <ngx-spinner 
+      bdOpacity = 0.9
+      bdColor = "#333"
+      size = "medium"
+      color = "#fff"
+      type = "ball-8bits"
+      [fullScreen] = "false">
+        <p style="color: white" > Pesquisando... </p>
+    </ngx-spinner>
+    <br>
+    <div class="form-row">
+      <div class="col-12">
+        <label>Chovendo? {{ isChovendo ? 'Sim' : 'Não'}}</label>
+        <br>
+        <label>Temperatura : {{temperatura}} &deg;C</label>
+        <br>
+        <label>Pokémon : {{pokemon}}</label>
+        <br>
+        <img [src]="pokeFoto" *ngIf="pokemon.length > 0">
       </div>
     </div>
   </form>

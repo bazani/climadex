@@ -9,4 +9,12 @@ export class PokemonService {
   constructor(
     private http: HttpClient
   ) { }
+
+  getPokemon(tipo: string): any {
+    return this.http.get(`https://pokeapi.co/api/v2/type/${tipo}`);
+  }
+
+  getPokemonImage(url: string): any {
+    return this.http.get(url);
+  }
 }
