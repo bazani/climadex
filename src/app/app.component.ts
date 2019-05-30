@@ -91,7 +91,6 @@ export class AppComponent {
           this.msgErro = err.error.message;
         }
       });
-    // verifica se o pokemon já foi exibido, para evitar repetições
   }
 
   getPokemonByType(tipo: string) {
@@ -99,17 +98,22 @@ export class AppComponent {
       resp => {
         // obtem a qte dos pokemons do tipo, para sortear um numero
         const amostras = resp.pokemon.length;
+        let sorteio = 0;
+        sorteio = Math.floor((Math.random() * amostras));
+
+        console.log('numero da sorte', sorteio);
+        console.log('pokemon sorteado', resp.pokemon[sorteio]);
 
         /* for (let index = 0; index < resp.pokemon.length; index++) {
           const element = resp.pokemon[index];
         } */
 
-        // verifica se o pokemon ja foi exibido
+        // verifica se o pokemon já foi exibido, para evitar repetições
 
         // mostra o nome do pokemon
-        this.pokemon = resp.pokemon[0].pokemon.name;
+        this.pokemon = resp.pokemon[sorteio].pokemon.name;
         // mostra imagem do pokemon
-        this.getPokemonImage(resp.pokemon[0].pokemon.url);
+        this.getPokemonImage(resp.pokemon[sorteio].pokemon.url);
       },
       err => {
         this.spinner.hide();
