@@ -49,7 +49,7 @@ export class AppComponent {
           }
           
           // pesquisa por um pokemon, seguindo as especificações
-          let tipo = 'eletric';
+          let tipo = 'electric';
 
           if (!this.isChovendo) {
             switch (true) {

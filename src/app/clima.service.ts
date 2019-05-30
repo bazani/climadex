@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-const apiKey = '9fdcdd7058e816af7050045cea29df1c';
+import { environment } from '../environments/environment';
+
+const apiKey = environment.weatherApiKey;
 
 @Injectable({
   providedIn: 'root'
