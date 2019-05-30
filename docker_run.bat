@@ -1,0 +1,1 @@
+docker run -p 4201:4200 --rm climadex:1
